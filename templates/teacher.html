@@ -32,7 +32,7 @@
         <div class="welcome"><h3>Welcome Dr. Hepworth!</h3></div>
         <div class="title"><h3>ACME University</h3></div>
         <div class="sign-out">
-          <h3><a href="login.html">Sign Out</a></h3>
+          <h3><a href="{{url_for('loginView')}}">Sign Out</a></h3>
         </div>
       </div>
       <div
@@ -55,13 +55,13 @@
           </thead>
           <tbody>
             <tr>
-              <td><a href="roster.html">CS 162</a></td>
+              <td><a href="{{url_for('rosterView')}}">CS 162</a></td>
               <td>Ammon Hepworth</td>
               <td>TR 3:00-3:50 PM</td>
               <td>4/4</td>
             </tr>
             <tr>
-              <td><a href="roster.html">CS 106</a></td>
+              <td><a href="{{url_for('rosterView')}}">CS 106</a></td>
               <td>Ammon Hepworth</td>
               <td>MWF 2:00-2:50 PM</td>
               <td>4/10</td>
