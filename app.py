@@ -67,9 +67,11 @@ def loginView():
         password = request.form['password']
         found_user = User.query.filter_by(username=username, password=password).first()
         if found_user.student_id == 0:
-            return redirect(url_for('teacherView', name="Ammon Hepworth"))
+            teacher_user = Teacher.query.filter_by(id=found_user.teacher_id).first()
+            return redirect(url_for('teacherView', name=teacher_user.name))
         if found_user.teacher_id == 0:
-            return redirect(url_for('studentView', name="Jose Santos"))
+            student_user = Student.query.filter_by(id=found_user.student_id).first()
+            return redirect(url_for('studentView', name=student_user.name))
     return render_template('login.html')
     
 
@@ -77,13 +79,13 @@ def loginView():
 def studentView(name):
     if request.method == 'POST':
         return render_template("student.html", name=name)
-    return render_template("student.html")
+    return render_template("student.html", name=name)
 
 @app.route("/teacher/<string:name>", methods=['POST', 'GET'])
 def teacherView(name):
     if request.method == 'POST':
         return render_template("teacher.html", name=name)
-    return render_template("teacher.html")
+    return render_template("teacher.html", name=name)
 
 @app.route("/teacher/roster", methods=['POST'])
 def rosterView(name):
