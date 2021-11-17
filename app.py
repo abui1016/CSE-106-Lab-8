@@ -1,5 +1,7 @@
+from os import name
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
@@ -10,14 +12,10 @@ db = SQLAlchemy(app)
 # Following Schema from Lab 8.pdf
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    role = db.Column(db.String(100))
+    student_id = db.Column(db.Integer, db.foreignkey('student.id'))
+    teacher_id = db.Column(db.Integer, db.foreignkey('teacher.id'))
     username = db.Column(db.String(100))
     password = db.Column(db.String(100))
-
-# After user presses login button:
-    # if role = student -> render_template(student)
-    # if role = teacher -> render_template(teacher)
 
 class Classes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -32,6 +30,11 @@ class Enrollment(db.Model):
     class_id = db.Column(db.Integer, db.ForeignKey('classes.id')) 
     student_id = db.Column(db.Integer, db.ForeignKey('users.id')) 
     grade = db.Column(db.Integer)
+
+class Teacher(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(100))
+    user = db.relationship('User')
 
 db.create_all()
 
@@ -90,8 +93,11 @@ def loginView():
 
 @app.route("/student/<string:name>", methods=['POST', 'GET'])
 def studentView(name):
+    classes = Classes.query.all()
+    for i in classes:
+        print(i[1].time)
     if request.method == 'POST':
-        return render_template("student.html", name=name)
+        return render_template("student.html", name=name, classes = classes)
     return render_template("student.html", name=name)
 
 @app.route("/teacher/<string:name>", methods=['POST', 'GET'])

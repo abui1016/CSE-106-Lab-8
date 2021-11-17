@@ -71,13 +71,15 @@
               </tr>
             </thead>
             <tbody>
+              {% for i in classes %}
               <tr>
-                <td>CS 106</td>
-                <td>Ammon Hepworth</td>
-                <td>MWF 2:00 - 2:50 PM</td>
-                <td>4/10</td>
+                <td>{{i[0].course_name}}</td>
+                <td>{{i[0].teacher}}</td>
+                <td>{{i[0].time}}</td>
+                <td>{{i[0].numenrolled}}</td>
                 <td><button class="btn btn-danger">-</button></td>
               </tr>
+              {% endfor %}
               <tr>
                 <td>CS 106</td>
                 <td>Ammon Hepworth</td>
