@@ -83,15 +83,17 @@ def studentView(name):
 
 @app.route("/teacher/<string:name>", methods=['POST', 'GET'])
 def teacherView(name):
+    found_teacher = Teacher.query.filter_by(name=name).first()
+    courses = Course.query.filter_by(teacher_id=found_teacher.id).all()
     if request.method == 'POST':
-        return render_template("teacher.html", name=name)
-    return render_template("teacher.html", name=name)
+        return render_template("teacher.html", name=name, courses=courses)
+    return render_template("teacher.html", name=name, courses=courses)
 
-@app.route("/teacher/roster", methods=['POST'])
+@app.route("/teacher/<string:name>/roster", methods=['POST'])
 def rosterView(name):
     if request.method == 'POST':
-        return render_template("roster.html")
-    return render_template("roster.html")
+        return render_template("roster.html", name=name)
+    return render_template("roster.html", name=name)
 
 if __name__ == "__main__":
     app.run()

@@ -54,10 +54,10 @@
             </tr>
           </thead>
           <tbody>
-            {% for i in courses%}
+            {% for i in courses %}
             <tr>
               <td><a href="{{url_for('rosterView')}}">{{i.course_name}}</a></td>
-              <td>{{i.teacher}}</td>
+              <td>{{i.teacher.name}}</td>
               <td>{{i.time}}</td>
               <td>{{i.num_enrolled}}</td>
             </tr>
