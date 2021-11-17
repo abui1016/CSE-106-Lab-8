@@ -32,14 +32,10 @@ class Enrollment(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('users.id')) 
     grade = db.Column(db.Integer)
 
-class Teacher(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(100))
-    user = db.relationship('User')
 
 db.create_all()
 
-admin.add_view(ModelView(Users,db.session))
+
 
 
 # Inserting into db
@@ -79,8 +75,9 @@ admin.add_view(ModelView(Users,db.session))
 # db.session.add(cs106)
 # db.session.add(cs162)
 # db.session.commit()
-
-
+# @app.route('/admin', methods=['POST','GET'])
+# def admin():
+admin.add_view(ModelView(Users,db.session))
 
 @app.route("/", methods=['POST', 'GET'])
 def loginView(): 
