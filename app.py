@@ -77,9 +77,11 @@ def loginView():
 
 @app.route("/student/<string:name>", methods=['POST', 'GET'])
 def studentView(name):
+    classes = Course.query.all()
+    print(classes[0].course_name)
     if request.method == 'POST':
         return render_template("student.html", name=name)
-    return render_template("student.html", name=name)
+    return render_template("student.html", name=name, classes=classes)
 
 @app.route("/teacher/<string:name>", methods=['POST', 'GET'])
 def teacherView(name):
