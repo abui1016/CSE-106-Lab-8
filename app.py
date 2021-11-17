@@ -1,6 +1,8 @@
 from os import name
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 
 app = Flask(__name__)
@@ -8,12 +10,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'secrettunnel'
 db = SQLAlchemy(app)
+admin = Admin(app)
 
 # Following Schema from Lab 8.pdf
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, db.foreignkey('student.id'))
-    teacher_id = db.Column(db.Integer, db.foreignkey('teacher.id'))
     username = db.Column(db.String(100))
     password = db.Column(db.String(100))
 
@@ -37,6 +38,9 @@ class Teacher(db.Model):
     user = db.relationship('User')
 
 db.create_all()
+
+admin.add_view(ModelView(Users,db.session))
+
 
 # Inserting into db
 # ahep = Users(name="Ammon Hepworth", role="Teacher", username="ahepworth", password="123123")
