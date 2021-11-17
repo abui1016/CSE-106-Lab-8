@@ -1,11 +1,14 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_admin import Admin 
+from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'secrettunnel'
 db = SQLAlchemy(app)
+admin = Admin(app)
 
 # Following Schema from Lab 8.pdf
 class User(db.Model):
@@ -49,6 +52,12 @@ class Enrollment(db.Model):
     course = db.relationship('Course', back_populates='students')
 
 db.create_all()
+
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Teacher, db.session))
+admin.add_view(ModelView(Student, db.session))
+admin.add_view(ModelView(Course, db.session))
+admin.add_view(ModelView(Enrollment, db.session))
 
 
 @app.route("/", methods=['POST', 'GET'])
