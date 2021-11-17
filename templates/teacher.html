@@ -54,7 +54,15 @@
             </tr>
           </thead>
           <tbody>
+            {% for i in courses%}
             <tr>
+              <td><a href="{{url_for('rosterView')}}">{{i.course_name}}</a></td>
+              <td>{{i.teacher}}</td>
+              <td>{{i.time}}</td>
+              <td>{{i.num_enrolled}}</td>
+            </tr>
+            {% endfor %}
+            <!-- <tr>
               <td><a href="{{url_for('rosterView')}}">CS 162</a></td>
               <td>Ammon Hepworth</td>
               <td>TR 3:00-3:50 PM</td>
@@ -64,7 +72,7 @@
               <td><a href="{{url_for('rosterView')}}">CS 106</a></td>
               <td>Ammon Hepworth</td>
               <td>MWF 2:00-2:50 PM</td>
-              <td>4/10</td>
+              <td>4/10</td> -->
             </tr>
           </tbody>
         </table>
