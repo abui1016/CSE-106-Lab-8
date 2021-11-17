@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin 
 from flask_admin.contrib.sqla import ModelView
@@ -77,20 +77,25 @@ def loginView():
 
 @app.route("/student/<string:name>", methods=['POST', 'GET'])
 def studentView(name):
+    classes = Course.query.all()
+    print(classes[0].course_name)
     if request.method == 'POST':
         return render_template("student.html", name=name)
-    return render_template("student.html", name=name)
+    return render_template("student.html", name=name, classes=classes)
 
 @app.route("/teacher/<string:name>", methods=['POST', 'GET'])
 def teacherView(name):
     found_teacher = Teacher.query.filter_by(name=name).first()
     courses = Course.query.filter_by(teacher_id=found_teacher.id).all()
+    session['teacher_name'] = found_teacher.name
+    print(session.get('teacher_name'))
     if request.method == 'POST':
         return render_template("teacher.html", name=name, courses=courses)
     return render_template("teacher.html", name=name, courses=courses)
 
-@app.route("/teacher/<string:name>/roster", methods=['POST'])
+@app.route("/teacher/roster", methods=['POST', 'GET'])
 def rosterView(name):
+    name = session.get('teacher_name')
     if request.method == 'POST':
         return render_template("roster.html", name=name)
     return render_template("roster.html", name=name)

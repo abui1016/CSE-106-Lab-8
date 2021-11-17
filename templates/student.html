@@ -71,20 +71,18 @@
               </tr>
             </thead>
             <tbody>
+              <!-- class[1].coursename
+                   class[2].coursename -->
+              {%for i in classes%}
               <tr>
-                <td>CS 106</td>
-                <td>Ammon Hepworth</td>
-                <td>MWF 2:00 - 2:50 PM</td>
-                <td>4/10</td>
+                <td>{{i.course_name}}</td>
+                <td>{{i.teacher_id}}</td>
+                <td>{{i.time}}</td>
+                <td>{{i.num_enrolled}}/{{i.capacity}}</td>
                 <td><button class="btn btn-danger">-</button></td>
               </tr>
-              <tr>
-                <td>CS 106</td>
-                <td>Ammon Hepworth</td>
-                <td>MWF 2:00 - 2:50 PM</td>
-                <td>4/10</td>
-                <td><button class="btn btn-primary">+</button></td>
-              </tr>
+              {%endfor%}
+                <!-- <td><button class="btn btn-primary">+</button></td> -->
             </tbody>
           </table>
         </div>
