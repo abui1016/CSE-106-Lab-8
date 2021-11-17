@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin 
 from flask_admin.contrib.sqla import ModelView
@@ -78,16 +78,35 @@ def loginView():
 @app.route("/student/<string:name>", methods=['POST', 'GET'])
 def studentView(name):
     classes = Course.query.all()
-    print(classes[0].course_name)
+    # teachering_course = Teacher.query.filter_by(id=classes.teacher_id).all()
+    id_list = []
+    course_list = []
+    found_student = Student.query.filter_by(name=name).first()    
+    student_enroll = Enrollment.query.filter_by(student_id=found_student.id).all()
+    for i in student_enroll:
+        # print(i.course_id)
+        id_list.append(i.course_id)
+    for i in id_list:
+        student_courses = Course.query.filter_by(id=i).first()
+        course_list.append(student_courses)
+
+
+    # teach = Teacher.query.join(Course, Course.teacher_id == Teacher.id).all()
+    # print(teach.name)
+    # tname = Teacher.query.filter_by(id=classes.teacher_id).all()
     if request.method == 'POST':
-        return render_template("student.html", name=name)
-    return render_template("student.html", name=name, classes=classes)
+        return render_template("student.html", name=name, courses=course_list, classes=classes)
+    return render_template("student.html", name=name, courses=course_list, classes=classes)
 
 @app.route("/teacher/<string:name>", methods=['POST', 'GET'])
 def teacherView(name):
+    found_teacher = Teacher.query.filter_by(name=name).first()
+    courses = Course.query.filter_by(teacher_id=found_teacher.id).all()
+    session['teacher_name'] = found_teacher.name
+    print(session.get('teacher_name'))
     if request.method == 'POST':
-        return render_template("teacher.html", name=name)
-    return render_template("teacher.html", name=name)
+        return render_template("teacher.html", name=name, courses=courses)
+    return render_template("teacher.html", name=name, courses=courses)
 
 @app.route("/teacher/roster", methods=['POST'])
 def rosterView(name):

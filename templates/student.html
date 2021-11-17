@@ -44,18 +44,20 @@
             <thead>
               <tr>
                 <th scope="col">Course Name</th>
-                <th scope="col">Professor</th>
+                <th scope="col">Professor ID</th>
                 <th class="text-center" scope="col">Time</th>
                 <th scope="col">Students Enrolled</th>
               </tr>
             </thead>
             <tbody>
+              {% for i in courses %}
               <tr>
-                <td class="text-center">Physics</td>
-                <td class="text-center">Boyle</td>
-                <td class="text-center">MW 11:00 - 11:50 AM</td>
-                <td class="text-center">5/10</td>
+                <td class="text-center">{{i.course_name}}</td>
+                <td class="text-center">{{i.teacher_id}}</td>
+                <td class="text-center">{{i.time}}</td>
+                <td class="text-center">{{i.num_enrolled}}</td>
               </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -64,7 +66,7 @@
             <thead>
               <tr>
                 <th>Course Name</th>
-                <th>Professor</th>
+                <th>Professor ID</th>
                 <th>Time</th>
                 <th>Students Enrolled</th>
                 <th>Add Class</th>
@@ -79,7 +81,7 @@
                 <td>{{i.teacher_id}}</td>
                 <td>{{i.time}}</td>
                 <td>{{i.num_enrolled}}/{{i.capacity}}</td>
-                <td><button class="btn btn-danger">-</button></td>
+                <td><button class="btn btn-primary">+</button></td>
               </tr>
               {%endfor%}
                 <!-- <td><button class="btn btn-primary">+</button></td> -->
